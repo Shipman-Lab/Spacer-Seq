@@ -1,5 +1,10 @@
 # Spacer-Seq
 MiSeq data ingestion and processing for targeted CRISPR spacer acquisition experiments.
+Necessary Python packages:
+1. fuzzysearch
+2. Biopython
+3. numpy
+4. xlsxwriter
 
 ## unpack_illumina_SBK.py
 Takes in raw files from Illumina run and converts into FASTQ files. 
