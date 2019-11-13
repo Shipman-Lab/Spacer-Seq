@@ -1,14 +1,20 @@
 # Spacer-Seq
 MiSeq data ingestion and processing for targeted CRISPR spacer acquisition experiments
 
+## unpack_illumina_SBK.py
+Takes in raw files from Illumina run and converts into FASTQ files. 
+
+## trimmomatic-0.39.jar
+Java executable that takes in FASTQ files and trims length based on quality score of bases. 
+
 ## Fed_SPCRs_v2.py
+Takes in trimmed FASTQ files and identifies newly acquired spacers. Generates several FASTQ files, filled with sequences of newly acquired spacers, grouped by shared attributes.
 
 ## SPCR_blast_v2.py
-
-## unpack_illumina_SBK.py
+Takes in trimmed FASTQ files and performs local BLAST against sequence data of interest (eg. plasmid map, host cell genome, etc.). Returns FASTQ files filled with new spacer sequences, based on alignment.
 
 ## oComp_Ordering_SBK.py
+Takes in trimmed FASTQ files and three different protospacer sequences, and returns an Excel file with data regarding position of specified protospacers in sequenced CRISPR arrays. 
 
 ## SPCR_hunt.py
 
-## trimmomatic-0.39.jar
