@@ -7,11 +7,11 @@ Necessary Python packages:
 3. numpy
 4. xlsxwriter
 
-## unpack_illumina_SBK.py
-Takes in raw files from Illumina run and converts into FASTQ files. 
+## unzip_illumina.py
+Takes in raw files from Illumina run and converts into FASTQ files.
 
 ## trimmomatic-0.39.jar
-Java executable that takes in FASTQ files and trims length based on quality score of bases. 
+Java executable that takes in FASTQ files and trims length based on quality score of bases.
 
 Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer for Illumina Sequence Data. Bioinformatics, btu170.
 
@@ -24,7 +24,6 @@ Takes in trimmed FASTQ files and identifies newly acquired spacers. Generates se
 Takes in trimmed FASTQ files and performs local BLAST against sequence data of interest (eg. plasmid map, host cell genome, etc.). Returns FASTQ files filled with new spacer sequences, based on alignment.
 
 ## oComp_Ordering_SBK.py
-Takes in trimmed FASTQ files and three different protospacer sequences, and returns an Excel file with data regarding position of specified protospacers in sequenced CRISPR arrays. 
+Takes in trimmed FASTQ files and three different protospacer sequences, and returns an Excel file with data regarding position of specified protospacers in sequenced CRISPR arrays.
 
 ## SPCR_hunt.py
-
