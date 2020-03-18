@@ -17,6 +17,9 @@ Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer f
 
 http://www.usadellab.org/cms/?page=trimmomatic
 
+## trimmedFASTQs.py
+Runs trimmomatic on all unzipped, indexed FASTQs
+
 ## Fed_SPCRs_v2.py
 Takes in trimmed FASTQ files and identifies newly acquired spacers. Generates several FASTQ files, filled with sequences of newly acquired spacers, grouped by shared attributes.
 
