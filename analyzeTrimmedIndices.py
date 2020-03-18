@@ -5,7 +5,7 @@ import os, sys, subprocess
 user_profile = os.environ ['USERPROFILE']
 File_Path = input("Trimmed FASTQ folder (run samples in here): ")
 parentFolder = os.path.split(File_Path)[0]
-FedSPCR_Path = '%s/extractedSpacers' % (parentFolder)
+FedSPCR_Path = '%s/Results' % (parentFolder)
 #Create Results folder
 if not os.path.exists(FedSPCR_Path): os.makedirs(FedSPCR_Path)
 
