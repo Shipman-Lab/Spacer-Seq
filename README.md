@@ -17,7 +17,7 @@ Bolger, A. M., Lohse, M., & Usadel, B. (2014). Trimmomatic: A flexible trimmer f
 
 http://www.usadellab.org/cms/?page=trimmomatic
 
-## trimmedFASTQs.py
+## trimFASTQs.py
 Runs trimmomatic on all unzipped, indexed FASTQs
 
 ## Fed_SPCRs_v2.py
