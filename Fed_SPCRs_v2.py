@@ -9,24 +9,18 @@ import os, sys
 from difflib import SequenceMatcher
 
 """File"""
-run_number = sys.argv[1] #MiSeq run number for Data_Path
-condition = sys.argv[2] #file name (minus .fastq) shoud be the only argument following Fed_SPCRs.py when running script
-running_location = sys.argv[3] #either local or orchestra
-
+trimmedFASTQ_folder = sys.argv[1] # location of trimmed FASTQ file
+#example: C:\Users\santi.bhattaraikline\Shipman_Lab_Dev\MiSeq_Data_Dev\msSBK_3-145984852\trimmedFASTQs
+filename = sys.argv[2]
+#ex: msSBK_3_09_trimmed.fastq
+Data_Path = sys.argv[3] #folder in which to deposit results folder
+#example: C:\Users\santi.bhattaraikline\Shipman_Lab_Dev\MiSeq_Data_Dev\msSBK_3-145984852\extractedSpacers
+sampleID = os.path.splitext(filename)[0]
+#ex: msSBK_3_09_trimmed.fastq -> msSBK_3_09_trimmed
 """Globals"""
 write_binned_whole_reads_to_fastq = 'yes'  #can be helpful for debugging, necessary for recording analysis
-if running_location == 'local':
-    user_profile = os.environ ['USERPROFILE']
-    # Data_Path = '%s/Dropbox/Data Analysis/MS%s' % (user_profile,run_number) #for running locally
-    Data_Path = '%s/Dropbox (Gladstone)/eVOLVER_and_Retro_Record/MiSeq_Data/%s' % (user_profile,run_number) #for running locally
-    Blast_Data_Path = '%s/Dropbox/Blast_Databases' % user_profile  #for running locally
-elif running_location == 'orchestra':
-    Data_Path = '/home/ss695/MS%s_Data_Analysis' % run_number  #for running on orchestra
-    Blast_Data_Path = '/home/ss695/Blast_Databases' #for running on orchestra
-elif running_location == 'orchestra_group':
-    Data_Path = '/n/groups/church/Seth/MS%s_Data_Analysis' % run_number  #for running on orchestra
-    Blast_Data_Path = '/home/ss695/Blast_Databases' #for running on orchestra
-fastq_reads = '%s/%s.fastq' % (Data_Path,condition)
+user_profile = os.environ ['USERPROFILE']
+fastq_reads = trimmedFASTQ_folder + "\\" + filename
 Repeat = 'GTGTTCCCCGCGCCAGCGGGGATAAACC'
 Old_SPCR1 = 'GAGCACAAATATCATCGCTCAAACCACTTACGG'
 Old_SPCR2 = 'GCCTCGCTGTAAATTCCAAAAACGATCTCTATA'
@@ -65,16 +59,20 @@ fed_lengths = []
 """Defs"""
 
 def get_spcrs(sequence):
-    last_rep = fuzzysearch.find_near_matches(Repeat[0:15], sequence.seq, max_l_dist=3)
+    last_rep = fuzzysearch.find_near_matches(Repeat[0:15], sequence.seq,
+    max_l_dist=3)
     results = fuzzysearch.find_near_matches(Repeat, sequence.seq, max_l_dist=6)
-    if len(results) == 3 and len(last_rep) >= 1 and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
+    if len(results) == 3 and len(last_rep) >= 1 \
+    and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
         spacer_list = [sequence[results[0].end:results[1].start]]
         spacer_list.append (sequence[results[1].end:results[2].start])
         spacer_list.append (sequence[results[2].end:last_rep[len(last_rep)-1].start])
-    elif len(results) == 2 and len(last_rep) >= 1 and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
+    elif len(results) == 2 and len(last_rep) >= 1 \
+    and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
         spacer_list = [sequence[results[0].end:results[1].start]]
         spacer_list.append (sequence[results[1].end:last_rep[len(last_rep)-1].start])
-    elif len(results) == 1 and len(last_rep) >= 1 and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
+    elif len(results) == 1 and len(last_rep) >= 1 \
+    and last_rep[len(last_rep)-1].start > results[len(results)-1].start:
         spacer_list = [sequence[results[0].end:last_rep[len(last_rep)-1].start]]
 
     elif len(results) == 4:
@@ -91,13 +89,17 @@ def get_spcrs(sequence):
     return spacer_list
 
 def not_existing(spacer):
-    if SequenceMatcher(None,Old_SPCR1,spacer).ratio() < 0.83 and SequenceMatcher(None,Old_SPCR2,spacer).ratio() < 0.83 and SequenceMatcher(None,Old_SPCR3,spacer).ratio() < 0.83 and SequenceMatcher(None,Old_SPCR4,spacer).ratio() < 0.83 and SequenceMatcher(None,Repeat,spacer).ratio() < 0.83:
+    if SequenceMatcher(None,Old_SPCR1,spacer).ratio() < 0.83 \
+    and SequenceMatcher(None,Old_SPCR2,spacer).ratio() < 0.83 \
+    and SequenceMatcher(None,Old_SPCR3,spacer).ratio() < 0.83 \
+    and SequenceMatcher(None,Old_SPCR4,spacer).ratio() < 0.83 \
+    and SequenceMatcher(None,Repeat,spacer).ratio() < 0.83:
         return True
     else: return False
 
 """Run"""
 #Create Results folder
-newpath = ((r'%s/%s_Results') % (Data_Path,condition))
+newpath = ((r'%s/%s_Results') % (Data_Path,sampleID))
 if not os.path.exists(newpath): os.makedirs(newpath)
 #Read in fastq
 for seq_record in SeqIO.parse(fastq_reads, "fastq"):
@@ -132,8 +134,10 @@ for seq_record in SeqIO.parse(fastq_reads, "fastq"):
                 if len(spacer_list[0]) < 61:
                     new_SPCRs.append (spacer_list[0])
 
-        elif not_existing(spacer_list[0]) == False and not_existing(spacer_list[1]) == True:
-            single_expansion_sequences_three_read_pos_two.append(seq_record) #not taking spacers from this
+        elif not_existing(spacer_list[0]) == False \
+        and not_existing(spacer_list[1]) == True:
+            single_expansion_sequences_three_read_pos_two.append(seq_record)
+            #not taking spacers from this
         else:
             weird_sequences_three_read.append(seq_record)
 
@@ -153,8 +157,10 @@ for seq_record in SeqIO.parse(fastq_reads, "fastq"):
                 single_expansion_sequences_two_read_pos_one.append(seq_record)
                 if len(spacer_list[0]) < 61:
                     new_SPCRs.append (spacer_list[0])
-        elif not_existing(spacer_list[0]) == False and not_existing(spacer_list[1]) == True:
-            single_expansion_sequences_two_read_pos_two.append(seq_record) #not taking spacers from this
+        elif not_existing(spacer_list[0]) == False \
+        and not_existing(spacer_list[1]) == True:
+            single_expansion_sequences_two_read_pos_two.append(seq_record)
+            #not taking spacers from this
         else:
             weird_sequences_two_read.append(seq_record)
 
@@ -174,69 +180,78 @@ for seq_record in SeqIO.parse(fastq_reads, "fastq"):
 
 #Dump the data back into fastq files
 if write_binned_whole_reads_to_fastq == 'yes':
-    wildtype_sequences_three_read_q = open("%s/%s_Results/wildtype_sequences_three_read_seqs.fastq" % (Data_Path,condition), "w")
-    SeqIO.write(wildtype_sequences_three_read, wildtype_sequences_three_read_q, "fastq")
+    wildtype_sequences_three_read_q = open("%s/%s_Results/wildtype_sequences_"
+    "three_read_seqs.fastq" % (Data_Path,sampleID), "w")
+    SeqIO.write(wildtype_sequences_three_read, wildtype_sequences_three_read_q,
+    "fastq")
     wildtype_sequences_three_read_q.close()
 
-    wildtype_sequences_two_read_q = open("%s/%s_Results/wildtype_sequences_two_read_seqs.fastq" % (Data_Path,condition), "w")
-    SeqIO.write(wildtype_sequences_two_read, wildtype_sequences_two_read_q, "fastq")
+    wildtype_sequences_two_read_q = open("%s/%s_Results/wildtype_sequences_"
+    "two_read_seqs.fastq" % (Data_Path,sampleID), "w")
+    SeqIO.write(wildtype_sequences_two_read, wildtype_sequences_two_read_q,
+    "fastq")
     wildtype_sequences_two_read_q.close()
 
-    wildtype_sequences_one_read_q = open("%s/%s_Results/wildtype_sequences_one_read_seqs.fastq" % (Data_Path,condition), "w")
-    SeqIO.write(wildtype_sequences_one_read, wildtype_sequences_one_read_q, "fastq")
+    wildtype_sequences_one_read_q = open("%s/%s_Results/wildtype_sequences_"
+    "one_read_seqs.fastq" % (Data_Path,sampleID), "w")
+    SeqIO.write(wildtype_sequences_one_read, wildtype_sequences_one_read_q,
+    "fastq")
     wildtype_sequences_one_read_q.close()
 
-    single_expansion_sequences_two_read_pos_one_q = open("%s/%s_Results/single_expansion_sequences_two_read_pos_one_seqs.fastq" % (Data_Path,condition), "w")
-    SeqIO.write(single_expansion_sequences_two_read_pos_one, single_expansion_sequences_two_read_pos_one_q, "fastq")
+    single_expansion_sequences_two_read_pos_one_q = open("%s/%s_Results/"
+    "single_expansion_sequences_two_read_pos_one_seqs.fastq" % (Data_Path,
+    sampleID), "w")
+    SeqIO.write(single_expansion_sequences_two_read_pos_one,
+    single_expansion_sequences_two_read_pos_one_q, "fastq")
     single_expansion_sequences_two_read_pos_one_q.close()
 
-    single_expansion_sequences_two_read_pos_two_q = open("%s/%s_Results/single_expansion_sequences_two_read_pos_two_seqs.fastq" % (Data_Path,condition), "w")
+    single_expansion_sequences_two_read_pos_two_q = open("%s/%s_Results/single_expansion_sequences_two_read_pos_two_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(single_expansion_sequences_two_read_pos_two, single_expansion_sequences_two_read_pos_two_q, "fastq")
     single_expansion_sequences_two_read_pos_two_q.close()
 
-    single_expansion_sequences_three_read_pos_one_q = open("%s/%s_Results/single_expansion_sequences_three_read_pos_one_seqs.fastq" % (Data_Path,condition), "w")
+    single_expansion_sequences_three_read_pos_one_q = open("%s/%s_Results/single_expansion_sequences_three_read_pos_one_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(single_expansion_sequences_three_read_pos_one, single_expansion_sequences_three_read_pos_one_q, "fastq")
     single_expansion_sequences_three_read_pos_one_q.close()
 
-    single_expansion_sequences_three_read_pos_two_q = open("%s/%s_Results/single_expansion_sequences_three_read_pos_two_seqs.fastq" % (Data_Path,condition), "w")
+    single_expansion_sequences_three_read_pos_two_q = open("%s/%s_Results/single_expansion_sequences_three_read_pos_two_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(single_expansion_sequences_three_read_pos_two, single_expansion_sequences_three_read_pos_two_q, "fastq")
     single_expansion_sequences_three_read_pos_two_q.close()
 
-    single_expansion_sequences_one_read_q = open("%s/%s_Results/single_expansion_sequences_one_read_seqs.fastq" % (Data_Path,condition), "w")
+    single_expansion_sequences_one_read_q = open("%s/%s_Results/single_expansion_sequences_one_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(single_expansion_sequences_one_read, single_expansion_sequences_one_read_q, "fastq")
     single_expansion_sequences_one_read_q.close()
 
-    double_expansion_sequences_two_read_q = open("%s/%s_Results/double_expansion_sequences_two_read_seqs.fastq" % (Data_Path,condition), "w")
+    double_expansion_sequences_two_read_q = open("%s/%s_Results/double_expansion_sequences_two_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(double_expansion_sequences_two_read, double_expansion_sequences_two_read_q, "fastq")
     double_expansion_sequences_two_read_q.close()
 
-    double_expansion_sequences_three_read_q = open("%s/%s_Results/double_expansion_sequences_three_read_seqs.fastq" % (Data_Path,condition), "w")
+    double_expansion_sequences_three_read_q = open("%s/%s_Results/double_expansion_sequences_three_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(double_expansion_sequences_three_read, double_expansion_sequences_three_read_q, "fastq")
     double_expansion_sequences_three_read_q.close()
 
-    triple_expansion_sequences_three_read_q = open("%s/%s_Results/triple_expansion_sequences_three_read_seqs.fastq" % (Data_Path,condition), "w")
+    triple_expansion_sequences_three_read_q = open("%s/%s_Results/triple_expansion_sequences_three_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(triple_expansion_sequences_three_read, triple_expansion_sequences_three_read_q, "fastq")
     triple_expansion_sequences_three_read_q.close()
 
-    weird_sequences_three_read_q = open("%s/%s_Results/weird_sequences_three_read_seqs.fastq" % (Data_Path,condition), "w")
+    weird_sequences_three_read_q = open("%s/%s_Results/weird_sequences_three_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(weird_sequences_three_read, weird_sequences_three_read_q, "fastq")
     weird_sequences_three_read_q.close()
 
-    weird_sequences_two_read_q = open("%s/%s_Results/weird_sequences_two_read_seqs.fastq" % (Data_Path,condition), "w")
+    weird_sequences_two_read_q = open("%s/%s_Results/weird_sequences_two_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(weird_sequences_two_read, weird_sequences_two_read_q, "fastq")
     weird_sequences_two_read_q.close()
 
-    weird_sequences_one_read_q = open("%s/%s_Results/weird_sequences_one_read_seqs.fastq" % (Data_Path,condition), "w")
+    weird_sequences_one_read_q = open("%s/%s_Results/weird_sequences_one_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(weird_sequences_one_read, weird_sequences_one_read_q, "fastq")
     weird_sequences_one_read_q.close()
 
-    weird_output_none_read_q = open("%s/%s_Results/weird_output_none_read_seqs.fastq" % (Data_Path,condition), "w")
+    weird_output_none_read_q = open("%s/%s_Results/weird_output_none_read_seqs.fastq" % (Data_Path,sampleID), "w")
     SeqIO.write(weird_sequences_none_read, weird_output_none_read_q, "fastq")
     weird_output_none_read_q.close()
 
 
 #Write new SPCRs to a fasta file
-new_SPCRs_q = open("%s/%s_Results/new_SPCRs_seqs.fasta" % (Data_Path,condition), "w")
+new_SPCRs_q = open("%s/%s_Results/new_SPCRs_seqs.fasta" % (Data_Path,sampleID), "w")
 SeqIO.write(new_SPCRs, new_SPCRs_q, "fasta")
 new_SPCRs_q.close()
 
@@ -249,7 +264,7 @@ for spcr in unique_new_SPCRs_set:
     unique_new_SPCRs.append (SeqRecord(spcr, id='%s' % unique_spcr_number))
     unique_spcr_number +=1
 
-unique_new_SPCRs_q = open("%s/%s_Results/unique_new_SPCRs_seqs.fasta" % (Data_Path,condition), "w")
+unique_new_SPCRs_q = open("%s/%s_Results/unique_new_SPCRs_seqs.fasta" % (Data_Path,sampleID), "w")
 SeqIO.write(unique_new_SPCRs, unique_new_SPCRs_q, "fasta")
 unique_new_SPCRs_q.close()
 
@@ -259,11 +274,11 @@ new_SPCR_lengths = [len(seq_record) for seq_record in new_SPCRs]
 number_nonwierd_reads = len(wildtype_sequences_three_read)+len(wildtype_sequences_two_read)+len(wildtype_sequences_one_read)+len(single_expansion_sequences_two_read_pos_one)+len(single_expansion_sequences_two_read_pos_two)+len(single_expansion_sequences_one_read)+len(single_replacement_sequences_two_read_pos_one)+len(double_expansion_sequences_two_read)+len(SPCR1_deletion_sequences_two_read)+len(SPCR1_deletion_sequences_one_read)+len(single_expansion_sequences_three_read_pos_one)+len(single_expansion_sequences_three_read_pos_two)+len(double_expansion_sequences_three_read)+len(triple_expansion_sequences_three_read)
 
 #Write a excel file with all the relevant data, FIX AND ADD DELETIONS
-workbook = xlsxwriter.Workbook('%s/%s_Results/SPCR_analysis.xlsx' % (Data_Path,condition))
+workbook = xlsxwriter.Workbook('%s/%s_Results/SPCR_analysis.xlsx' % (Data_Path,sampleID))
 worksheet = workbook.add_worksheet()
 bold = workbook.add_format({'bold': True})
 #Add titles (row, col: zero referenced)
-worksheet.write(0,1,condition)
+worksheet.write(0,1,sampleID)
 worksheet.write(1,0,'Unexpanded Reads')
 worksheet.write(2,0,'Single Expansion Reads')
 worksheet.write(3,0,'Double Expansion Reads')
