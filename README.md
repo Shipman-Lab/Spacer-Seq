@@ -6,6 +6,7 @@ Necessary Python packages:
 2. Biopython
 3. numpy
 4. xlsxwriter
+5. xlrd
 
 ## unzip_illumina.py
 Takes in raw files from Illumina run and converts into FASTQ files.

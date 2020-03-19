@@ -3,7 +3,8 @@ from Bio import SeqIO
 import os, sys
 import fuzzysearch
 import itertools
-import xlsxwriter
+import xlsxwriter, xlrd
+from xlrd import open_workbook
 
 """Line Arguments"""
 Data_Path = sys.argv[1] # path to trimmed_Results FASTQ folder
@@ -13,11 +14,24 @@ sampleID = os.path.split(Data_Path)[1][0:-16]
 #example: C:\Users\santi.bhattaraikline\Shipman_Lab_Dev\MiSeq_Data_Dev\
 #msSBK_3-145984852\Results\msSBK_3_37_trimmed_Results
 # ->msSBK_3_37
+configFile = sys.argv[2]
+
 """Globals"""
 user_profile = os.environ ['USERPROFILE']
-Target_dict = {'A': 'GCTGTTTGTCGCTCACTGAGTCAGACTCAGTGA',
-    'B': 'GAAAATGGAGAGGTTGCTGCAACCTCTCCATTT',
-    'C': 'GCCCAATTTACTACTCGTTCTGGTGTTTCTCGT'}
+
+def Target_dict(sampleID):
+    from xlrd import open_workbook
+    book = open_workbook(str(configFile))
+    sheet = book.sheet_by_index(0)
+    column0 = sheet.col_values(0)
+    if column0.index(sampleID):
+        sampleRow = column0.index(sampleID)
+        return {'A': sheet.cell(sampleRow, 1).value,
+            'B': sheet.cell(sampleRow, 2).value,
+            'C': sheet.cell(sampleRow, 3).value}
+
+Target_dict = Target_dict(sampleID)
+
 count_dict = {'A': 0, 'B': 0, 'C': 0}
 percent_dict = {}
 Repeat = 'GTGTTCCCCGCGCCAGCGGGGATAAACC'
