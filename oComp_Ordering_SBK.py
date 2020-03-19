@@ -6,21 +6,15 @@ import itertools
 import xlsxwriter
 
 """Line Arguments"""
-run_number = sys.argv[1] #MiSeq run number for Data_Path
-condition = sys.argv[2] #file name (minus .fastq) shoud be the only argument following SPCR_blast.py when running script
-running_location = sys.argv[3] #either local or orchestra
-
+Data_Path = sys.argv[1] # path to trimmed_Results FASTQ folder
+#example: C:\Users\santi.bhattaraikline\Shipman_Lab_Dev\MiSeq_Data_Dev\
+#msSBK_3-145984852\Results\msSBK_3_37_trimmed_Results
+sampleID = os.path.split(Data_Path)[1][0:-16]
+#example: C:\Users\santi.bhattaraikline\Shipman_Lab_Dev\MiSeq_Data_Dev\
+#msSBK_3-145984852\Results\msSBK_3_37_trimmed_Results
+# ->msSBK_3_37
 """Globals"""
-if running_location == 'local':
-    user_profile = os.environ ['USERPROFILE']
-    Data_Path = ('%s/Dropbox (Gladstone)/eVOLVER_and_Retro_Record/MiSeq_Data/'
-        + 'msSBK_%s/msSBK_%s_%s_trimmed_Results') % (user_profile,run_number,run_number,condition) #for running locally
-    # Data_Path = '%s/Dropbox/Data Analysis/MS%s/%s_Results' % (user_profile,run_number,condition) #for running locally
-    Blast_Data_Path = '%s/Dropbox/Blast_Databases' % user_profile  #for running locally
-elif running_location == 'orchestra_group':
-    Data_Path = '/n/groups/church/Seth/MS%s_Data_Analysis/%s_Results' % (run_number,condition)  #for running on orchestra
-    Blast_Data_Path = '/home/ss695/Blast_Databases' #for running on orchestra
-#b3v2 is A, b3v35 is B,  psAA33 is C
+user_profile = os.environ ['USERPROFILE']
 Target_dict = {'A': 'GCTGTTTGTCGCTCACTGAGTCAGACTCAGTGA',
     'B': 'GAAAATGGAGAGGTTGCTGCAACCTCTCCATTT',
     'C': 'GCCCAATTTACTACTCGTTCTGGTGTTTCTCGT'}
@@ -134,7 +128,8 @@ for key in count_dict:
 
 """Output"""
 #excel file with relevant data
-workbook = xlsxwriter.Workbook('%s/oComp_Orders.xlsx' % Data_Path)
+workbook = xlsxwriter.Workbook('%s/%s_oComp_Orders.xlsx' % (Data_Path,
+sampleID))
 worksheet = workbook.add_worksheet()
 bold = workbook.add_format({'bold': True})
 #Add titles (row, col: zero referenced)
