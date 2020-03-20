@@ -11,6 +11,7 @@ user_profile = os.environ ['USERPROFILE']
 
 """Run"""
 def run_FedSPCRs_v2_all():
+    print()
     File_Path = input("Trimmed FASTQ folder (run samples in here): ")
     parentFolder = os.path.split(File_Path)[0]
     FedSPCR_Path = '%s/Results' % (parentFolder)
@@ -25,7 +26,9 @@ def run_FedSPCRs_v2_all():
         FedSPCR_Path)
 
 def run_oComp_Ordering():
+    print()
     FedSPCR_Path = input("Results folder path: ")
+    print()
     configFile = input("Config file (full path with filename): ")
     ResultsFolderList = os.listdir(FedSPCR_Path)
     for ResultsFolder in ResultsFolderList:
@@ -36,27 +39,33 @@ def run_oComp_Ordering():
 
 
 def inquire_about_spacers():
+    print()
     reply = input("Extract spacers? (y = yes, n = no) -- ")
     if reply == "y":
         run_FedSPCRs_v2_all()
+        inquire_about_ordering()
     elif reply == "n":
         inquire_about_ordering()
     else:
         inquire_about_spacers()
 
 def inquire_about_ordering():
+    print()
     reply = input("Determine spacer ordering? (y = yes, n = no) -- ")
     if reply == "y":
+        print()
         reply = input("Have you completed the configuration sheet? (y = yes, "\
         "n = no) -- ")
         if reply == "y":
             run_oComp_Ordering()
         elif reply == "n":
+            print()
             print("Quitting")
             quit()
         else:
             inquire_about_ordering()
     elif reply == "n":
+        print()
         print("Quitting")
         quit()
     else:
