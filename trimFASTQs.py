@@ -1,7 +1,7 @@
 import os, sys, subprocess
 
 user_profile = os.environ ['USERPROFILE']
-inFolderPath = input("Paste file path here (folder containing raw FASTQs): ")
+inFolderPath = sys.argv[1] #input("Paste file path here (folder containing raw FASTQs): ")
 parentFolder = os.path.split(inFolderPath)[0]
 outFolderPath = parentFolder + '\\trimmedFASTQs'
 
@@ -17,7 +17,7 @@ if not os.path.exists(outFolderPath):
     os.makedirs(outFolderPath)
     trim()
 else:
-    print("You have already trimmed these files.")
-    response = input("Do you wish to proceed? (y = yes, n = no) -- ")
-    if response == "y":
-        trim()
+    # print("You have already trimmed these files.")
+    # response = input("Do you wish to proceed? (y = yes, n = no) -- ")
+    # if response == "y":
+    trim()

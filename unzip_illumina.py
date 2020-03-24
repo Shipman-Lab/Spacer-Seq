@@ -3,7 +3,7 @@ import shutil
 import os, sys
 
 user_profile = os.environ ['USERPROFILE']
-File_Path = input("File Path (MiSeq Run \"FASTQ Generation\" Folder):")
+File_Path = sys.argv[1]  #input("File Path (MiSeq Run \"FASTQ Generation\" Folder):")
 parentFolder = os.path.split(File_Path)[0]
 Data_Path = '%s/rawIndexedFASTQs' % (parentFolder)
 newpath = ((r'%s') % (Data_Path))
@@ -28,7 +28,7 @@ if not os.path.exists(newpath):
 	os.makedirs(newpath)
 	unzip()
 else:
-	print("You have already unzipped these files.")
-	response = input("Do you wish to repeat? (y = yes, n = no) -- ")
-	if response == "y":
-		unzip()
+	# print("You have already unzipped these files.")
+	# response = input("Do you wish to repeat? (y = yes, n = no) -- ")
+	# if response == "y":
+	unzip()
