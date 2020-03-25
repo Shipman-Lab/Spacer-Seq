@@ -2,7 +2,6 @@
 import os, sys, subprocess, xlsxwriter, platform
 
 """File Handling"""
-user_profile = os.environ ['USERPROFILE']
 File_Path = sys.argv[1] #input("Trimmed FASTQ folder (run samples in here): ")
 parentFolder = os.path.split(File_Path)[0]
 FedSPCR_Path = '%s/Results' % (parentFolder)
