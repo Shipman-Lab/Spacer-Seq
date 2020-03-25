@@ -17,7 +17,6 @@ sampleID = os.path.split(Data_Path)[1][0:-16]
 configFile = sys.argv[2]
 
 """Globals"""
-user_profile = os.environ ['USERPROFILE']
 
 def Target_dict(sampleID):
     from xlrd import open_workbook
