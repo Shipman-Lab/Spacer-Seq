@@ -2,15 +2,15 @@ import os, sys, subprocess
 
 inFolderPath = sys.argv[1] #input("Paste file path here (folder containing raw FASTQs): ")
 parentFolder = os.path.split(inFolderPath)[0]
-outFolderPath = parentFolder + '\\trimmedFASTQs'
+outFolderPath = parentFolder + '/trimmedFASTQs'
 
 def trim():
     for file in os.listdir(inFolderPath):
         print("Trimming " + file)
-        inFilePath = inFolderPath + '\\' + file
+        inFilePath = inFolderPath + '/' + file
         sampleID = os.path.splitext(file)[0]
-        outFilePath = outFolderPath + '\\' + sampleID + '_trimmed.fastq'
-        subprocess.run("java -jar " + os.getcwd() + '\\trimmomatic-0.39.jar SE ' + inFilePath + ' ' + outFilePath + " LEADING:3 TRAILING:3" + " SLIDINGWINDOW:6:25 MINLEN:60")
+        outFilePath = outFolderPath + '/' + sampleID + '_trimmed.fastq'
+        subprocess.run("java -jar " + os.getcwd() + '/trimmomatic-0.39.jar SE ' + inFilePath + ' ' + outFilePath + " LEADING:3 TRAILING:3" + " SLIDINGWINDOW:6:25 MINLEN:60")
         print()
 if not os.path.exists(outFolderPath):
     os.makedirs(outFolderPath)
