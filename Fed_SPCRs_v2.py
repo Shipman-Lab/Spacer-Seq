@@ -19,7 +19,6 @@ sampleID = os.path.splitext(filename)[0]
 #ex: msSBK_3_09_trimmed.fastq -> msSBK_3_09_trimmed
 """Globals"""
 write_binned_whole_reads_to_fastq = 'yes'  #can be helpful for debugging, necessary for recording analysis
-user_profile = os.environ ['USERPROFILE']
 fastq_reads = trimmedFASTQ_folder + "\\" + filename
 Repeat = 'GTGTTCCCCGCGCCAGCGGGGATAAACC'
 Old_SPCR1 = 'GAGCACAAATATCATCGCTCAAACCACTTACGG'
