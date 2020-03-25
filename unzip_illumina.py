@@ -2,7 +2,6 @@ import gzip
 import shutil
 import os, sys
 
-user_profile = os.environ ['USERPROFILE']
 File_Path = sys.argv[1]  #input("File Path (MiSeq Run \"FASTQ Generation\" Folder):")
 parentFolder = os.path.split(File_Path)[0]
 Data_Path = '%s/rawIndexedFASTQs' % (parentFolder)
