@@ -24,11 +24,11 @@ def run_FedSPCRs_v2_all(File_Path):
         print()
         print("Extracting spacers from: " + file)
         if sysPlatform == 'Windows':
-            subprocess.call("py Fed_SPCRs_v2.py " + File_Path + " " + file +
-             " " + FedSPCR_Path)
+            subprocess.call(['py', 'Fed_SPCRs_v2.py', File_Path, file, \
+            FedSPCR_Path])
         else:
-            subprocess.call("python3 Fed_SPCRs_v2.py " + File_Path + " " + file +
-             " " + FedSPCR_Path)
+            subprocess.call(['python3', 'Fed_SPCRs_v2.py', File_Path, file, \
+            FedSPCR_Path])
 
 def run_oComp_Ordering(FedSPCR_Path):
     print()
@@ -38,11 +38,11 @@ def run_oComp_Ordering(FedSPCR_Path):
         print()
         print("Determining spacer order: " + ResultsFolder)
         if sysPlatform == 'Windows':
-            subprocess.call("py oComp_Ordering_SBK.py " + FedSPCR_Path + "\\" +
-            ResultsFolder + " " + configFile)
+            subprocess.call(['py', 'oComp_Ordering_SBK.py', FedSPCR_Path + "/" +
+            ResultsFolder, configFile])
         else:
-            subprocess.call("python3 oComp_Ordering_SBK.py " + FedSPCR_Path + "\\" +
-            ResultsFolder + " " + configFile)
+            subprocess.call(['python3', 'oComp_Ordering_SBK.py', FedSPCR_Path + "/" +
+            ResultsFolder, configFile])
 
 
 if logic == 'ext':
