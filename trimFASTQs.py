@@ -10,7 +10,9 @@ def trim():
         inFilePath = inFolderPath + '/' + file
         sampleID = os.path.splitext(file)[0]
         outFilePath = outFolderPath + '/' + sampleID + '_trimmed.fastq'
-        subprocess.run("java -jar " + os.getcwd() + '/trimmomatic-0.39.jar SE ' + inFilePath + ' ' + outFilePath + " LEADING:3 TRAILING:3" + " SLIDINGWINDOW:6:25 MINLEN:60")
+        subprocess.run(["java", "-jar", os.getcwd() + "/trimmomatic-0.39.jar", \
+        "SE", inFilePath, outFilePath, "LEADING:3", "TRAILING:3", \
+        "SLIDINGWINDOW:6:25", "MINLEN:60"])
         print()
 if not os.path.exists(outFolderPath):
     os.makedirs(outFolderPath)
