@@ -1,6 +1,5 @@
 import os, sys, subprocess
 
-user_profile = os.environ ['USERPROFILE']
 inFolderPath = sys.argv[1] #input("Paste file path here (folder containing raw FASTQs): ")
 parentFolder = os.path.split(inFolderPath)[0]
 outFolderPath = parentFolder + '\\trimmedFASTQs'
