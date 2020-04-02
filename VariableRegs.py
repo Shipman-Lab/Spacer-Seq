@@ -119,6 +119,10 @@ def runVariableRegionAnalysis():
     worksheet.write_column(2, 0, spacerIDList)
     worksheet.write_column(2, 1, spacerCountList)
     worksheet.write_column(2, 2, [spacerSeqDict[key] for key in spacerSeqDict])
+    worksheet.write(31, 0, 'Total Retron-Derived:')
+    worksheet.write(31, 1, target_derived)
+    worksheet.write(32, 0, 'Total Nonretron-Derived:')
+    worksheet.write(32, 1, total_spcrs - target_derived)
     workbook.close()
 
 runVariableRegionAnalysis()
