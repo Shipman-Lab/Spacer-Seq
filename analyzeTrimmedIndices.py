@@ -6,8 +6,10 @@ File_Path = sys.argv[1] #input("Trimmed FASTQ folder (run samples in here): ")
 parentFolder = os.path.split(File_Path)[0]
 FedSPCR_Path = '%s/Results' % (parentFolder)
 # FedSPCR_Path = sys.argv[2] #input("Results folder path: ")
-configFile = sys.argv[2] #input("Config file (full path with filename): ")
-logic = sys.argv[3]
+logic = sys.argv[2]
+OconfigFile = sys.argv[3] #input("Config file (full path with filename): ")
+VarConfigFile = sys.argv[4] #input("Config file for variable region analysis")
+
 """Globals"""
 sysPlatform = platform.system()
 
@@ -39,19 +41,31 @@ def run_oComp_Ordering(FedSPCR_Path):
         print("Determining spacer order: " + ResultsFolder)
         if sysPlatform == 'Windows':
             subprocess.call(['py', 'oComp_Ordering_SBK.py', FedSPCR_Path + "/" +
-            ResultsFolder, configFile])
+            ResultsFolder, OconfigFile])
         else:
             subprocess.call(['python3', 'oComp_Ordering_SBK.py', FedSPCR_Path + "/" +
-            ResultsFolder, configFile])
+            ResultsFolder, OconfigFile])
 
+def run_VariableRegion(FedSPCR_Path):
+    print()
+    print()
+    ResultsFolderList = os.listdir(FedSPCR_Path)
+    for ResultsFolder in ResultsFolderList:
+        print()
+        print("Analyzing variable regions: " + ResultsFolder)
+        if sysPlatform == 'Windows':
+            subprocess.call(['py', 'VariableRegs.py', FedSPCR_Path + "/" +
+            ResultsFolder, VarConfigFile])
+        else:
+            subprocess.call(['python3', 'VariableRegs.py', FedSPCR_Path + "/" +
+            ResultsFolder, VarConfigFile])
 
-if logic == 'ext':
+if 'e' in logic:
     run_FedSPCRs_v2_all(File_Path)
-elif logic == 'ord':
+if 'o' in logic:
     run_oComp_Ordering(FedSPCR_Path)
-elif logic == 'exo':
-    run_FedSPCRs_v2_all(File_Path)
-    run_oComp_Ordering(FedSPCR_Path)
+if 'v' in logic:
+    run_VariableRegion(FedSPCR_Path)
 else:
     print('Quitting')
 # def inquire_about_spacers():

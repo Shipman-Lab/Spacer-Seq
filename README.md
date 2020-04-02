@@ -49,8 +49,9 @@ Runs Fed_SPCRs_v2.py and/or oComp_Ordering_SBK.py on all trimmed multi-FASTQs, i
 
 Instructions: Run with python3. Requires three line arguments.
 * Line argument one: path of folder containing trimmed FASTQs aka. "trimmedFASTQs".
-* Line argument two: path and filename of xlsx (Excel) ordering config file containing spacers of interest.
-* Line argument three: Instruction to extract and/or tabulate order of spacers. `ext` = extract; `ord` = order; `exo` = both.
+* Line argument two: Instruction to extract and/or tabulate order of spacers. `e` = extract; `o` = order; `v` = analyze variable regions. You can provide combinations of these arguments to do multiples things. Ex: `eov` = extract + order + analyze variable regions.
+* Line argument three: path and filename of xlsx (Excel) ordering config file containing spacers of interest for ordering function. If not doing this analysis, type `None`.
+* Line argument four: path and filename of xlsx (Excel) ordering config file containing variable region options for analysis. If not doing this analysis, type `None`.
 
 Example:
 ```
