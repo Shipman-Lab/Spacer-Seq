@@ -39,7 +39,7 @@ python3 trimFASTQs.py ~/MiSeq_Data_Dev/msSBK_4_reIndex/rawIndexedFASTQs
 Takes in trimmed FASTQ files corresponding to a single index and identifies newly acquired spacers. Generates several FASTQ files, filled with sequences of newly acquired spacers, grouped by shared attributes.
 
 ## SPCR_blast_v2.py
-Takes in trimmed FASTQ files and performs local BLAST against sequence data of interest (eg. plasmid map, host cell genome, etc.). Returns FASTQ files filled with new spacer sequences, based on alignment.
+Takes in trimmed FASTQ files and performs local BLAST against sequence data of interest (eg. plasmid map, host cell genome, etc.). Returns FASTQ files filled with new spacer sequences, based on alignment. This step is not necessary if you are searching for a known spacer. It can be helpful when trying to characterize  new spacers of unknown origin.
 
 ## oComp_Ordering_SBK.py
 Takes in trimmed FASTQ files corresponding to a single index and three different protospacer sequences, and returns an Excel file with data regarding position of specified protospacers in sequenced CRISPR arrays.
