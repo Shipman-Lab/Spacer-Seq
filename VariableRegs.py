@@ -58,7 +58,7 @@ def runVariableRegionAnalysis():
             target_derived += 1
             fivePrime = spacer[0:5]
             mismatch = spacer[5 + len(Target_dict['LeadProxCore'])]
-            threePrime = spacer[-6:-1]
+            threePrime = spacer[-5:len(spacer)]
             if fuzzysearch.find_near_matches(Target_dict['LeadProx_A'], fivePrime,
             max_l_dist=1):
                 spacerKey.append('A')
