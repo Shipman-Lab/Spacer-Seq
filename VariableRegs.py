@@ -32,7 +32,9 @@ def build_dict(sampleID):
         'Mismatch_B': sheet.cell(sampleRow, 5).value,
         'LeadDistCore': sheet.cell(sampleRow, 6).value,
         'LeadDist_A': sheet.cell(sampleRow, 7).value,
-        'LeadDist_B': sheet.cell(sampleRow, 8).value,}
+        'LeadDist_B': sheet.cell(sampleRow, 8).value,
+        'LeadProx_l_dist': int(sheet.cell(sampleRow, 9).value),
+        'LeadDist_l_dist': int(sheet.cell(sampleRow, 10).value),}
         return dictionary
 
 def runVariableRegionAnalysis():
@@ -45,7 +47,6 @@ def runVariableRegionAnalysis():
         ID = ''.join(ID)
         ID_dict[ID] = 0
         coreSeq = Target_dict['LeadProxCore'] + 'N' + Target_dict['LeadDistCore']
-
     total_spcrs = 0
     target_derived = 0
     for seq_record in SeqIO.parse("%s/new_SPCRs_seqs.fasta" % Data_Path, "fasta"):
@@ -60,10 +61,10 @@ def runVariableRegionAnalysis():
             mismatch = spacer[5 + len(Target_dict['LeadProxCore'])]
             threePrime = spacer[-5:len(spacer)]
             if fuzzysearch.find_near_matches(Target_dict['LeadProx_A'], fivePrime,
-            max_l_dist=1):
+            max_l_dist=Target_dict['LeadProx_l_dist']):
                 spacerKey.append('A')
             elif fuzzysearch.find_near_matches(Target_dict['LeadProx_B'], fivePrime,
-            max_l_dist=1):
+            max_l_dist=Target_dict['LeadProx_l_dist']):
                 spacerKey.append('B')
             else:
                 spacerKey.append('N')
@@ -74,10 +75,10 @@ def runVariableRegionAnalysis():
             else:
                 spacerKey.append('N')
             if fuzzysearch.find_near_matches(Target_dict['LeadDist_A'], threePrime,
-            max_l_dist=1):
+            max_l_dist=Target_dict['LeadDist_l_dist']):
                 spacerKey.append('A')
             elif fuzzysearch.find_near_matches(Target_dict['LeadDist_B'], threePrime,
-            max_l_dist=1):
+            max_l_dist=Target_dict['LeadDist_l_dist']):
                 spacerKey.append('B')
             else:
                 spacerKey.append('N')
