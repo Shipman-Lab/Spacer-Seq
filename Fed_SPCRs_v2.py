@@ -273,7 +273,8 @@ new_SPCR_lengths = [len(seq_record) for seq_record in new_SPCRs]
 number_nonwierd_reads = len(wildtype_sequences_three_read)+len(wildtype_sequences_two_read)+len(wildtype_sequences_one_read)+len(single_expansion_sequences_two_read_pos_one)+len(single_expansion_sequences_two_read_pos_two)+len(single_expansion_sequences_one_read)+len(single_replacement_sequences_two_read_pos_one)+len(double_expansion_sequences_two_read)+len(SPCR1_deletion_sequences_two_read)+len(SPCR1_deletion_sequences_one_read)+len(single_expansion_sequences_three_read_pos_one)+len(single_expansion_sequences_three_read_pos_two)+len(double_expansion_sequences_three_read)+len(triple_expansion_sequences_three_read)
 
 #Write a excel file with all the relevant data, FIX AND ADD DELETIONS
-workbook = xlsxwriter.Workbook('%s/%s_Results/SPCR_analysis.xlsx' % (Data_Path,sampleID))
+workbook = xlsxwriter.Workbook('%s/%s_Results/%s_SPCR_analysis.xlsx' \
+% (Data_Path,sampleID,sampleID))
 worksheet = workbook.add_worksheet()
 bold = workbook.add_format({'bold': True})
 #Add titles (row, col: zero referenced)
