@@ -101,11 +101,11 @@ def triple_order(triplet):
 	Second = 'N'
 	Third = 'N'
 	for target in ['A','B','C']:
-		if len(fuzzysearch.find_near_matches(Target_dict[target],str(double[0].seq), max_l_dist=3)):
+		if len(fuzzysearch.find_near_matches(Target_dict[target],str(triplet[0].seq), max_l_dist=3)):
 			First = target
-		if len(fuzzysearch.find_near_matches(Target_dict[target],str(double[1].seq), max_l_dist=3)):
+		if len(fuzzysearch.find_near_matches(Target_dict[target],str(triplet[1].seq), max_l_dist=3)):
 			Second = target
-		if len(fuzzysearch.find_near_matches(Target_dict[target],str(double[2].seq), max_l_dist=3)):
+		if len(fuzzysearch.find_near_matches(Target_dict[target],str(triplet[2].seq), max_l_dist=3)):
 			Third = target
 	order = (First,Second,Third)
 	return order
