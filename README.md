@@ -50,10 +50,20 @@ Runs Fed_SPCRs_v2.py and/or oComp_Ordering_SBK.py on all trimmed multi-FASTQs, i
 Instructions: Run with python3. Requires three line arguments.
 * Line argument one: path of folder containing trimmed FASTQs aka. "trimmedFASTQs".
 * Line argument two: Instruction to extract and/or tabulate order of spacers. `e` = extract; `o` = order; `v` = analyze variable regions. You can provide combinations of these arguments to do multiples things. Ex: `eov` = extract + order + analyze variable regions.
-* Line argument three: path and filename of xlsx (Excel) ordering config file containing spacers of interest for ordering function. If not doing this analysis, type `None`.
-* Line argument four: path and filename of xlsx (Excel) ordering config file containing variable region options for analysis. If not doing this analysis, type `None`.
+* Line argument three: path and filename of xlsx (Excel) ordering config file containing spacers of interest for ordering function. If not doing this analysis, type `NA`.
+* Line argument four: path and filename of xlsx (Excel) ordering config file containing variable region options for analysis. If not doing this analysis, type `NA`.
 
 Example:
 ```
-python3 analyzeTrimmedIndices.py ~/MiSeq_Data_Dev/msSBK_4_reIndex/trimmedFASTQs ~/MiSeq_Data_Dev/msSBK_4_reIndex/msSBK_4_ordering_config.xlsx ord
+python3 analyzeTrimmedIndices.py ~/MiSeq_Data_Dev/msSBK_4_reIndex/trimmedFASTQs o ~/MiSeq_Data_Dev/msSBK_4_reIndex/msSBK_4_ordering_config.xlsx NA
 ```
+
+## compile_summary_excel.py
+Takes Fed_SPCRs_v2.py and oComp_Ordering_SBK.py output excel sheets, for all indices in a "Results" folder, and compiles the data into a single excel sheet. For MiSeq run named "miseq_run_name", sheet has the name miseq_run_name_summary.xlsx.
+* Line argument one: path to "Results" folder containing all indices and associated files from analysis scripts.
+
+Example:
+```
+python3 compile_summary_excel.py ~\MiSeq_Data\msSBK_13\Results
+```
+
