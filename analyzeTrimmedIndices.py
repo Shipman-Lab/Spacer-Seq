@@ -46,6 +46,20 @@ def run_oComp_Ordering(FedSPCR_Path):
             subprocess.call(['python3', 'oComp_Ordering_SBK.py', FedSPCR_Path + "/" +
             ResultsFolder, OconfigFile])
 
+def run_oComp_Ordering_11baseBC(FedSPCR_Path):
+    print()
+    print()
+    ResultsFolderList = os.listdir(FedSPCR_Path)
+    for ResultsFolder in ResultsFolderList:
+        print()
+        print("Determining spacer order (11 base barcode): " + ResultsFolder)
+        if sysPlatform == 'Windows':
+            subprocess.call(['py', 'oComp_Ordering_11baseBC.py', FedSPCR_Path + "/" +
+            ResultsFolder, OconfigFile])
+        else:
+            subprocess.call(['python3', 'oComp_Ordering_11baseBC.py', FedSPCR_Path + "/" +
+            ResultsFolder, OconfigFile])
+
 def run_VariableRegion(FedSPCR_Path):
     print()
     print()
@@ -60,11 +74,13 @@ def run_VariableRegion(FedSPCR_Path):
             subprocess.call(['python3', 'VariableRegs.py', FedSPCR_Path + "/" +
             ResultsFolder, VarConfigFile])
 
-if 'e' in logic:
+if logic == 'e':
     run_FedSPCRs_v2_all(File_Path)
-if 'o' in logic:
+if logic == 'o':
     run_oComp_Ordering(FedSPCR_Path)
-if 'v' in logic:
+if logic == 'o11':
+    run_oComp_Ordering_11baseBC(FedSPCR_Path)
+if logic == 'v':
     run_VariableRegion(FedSPCR_Path)
 else:
     print('Quitting')
